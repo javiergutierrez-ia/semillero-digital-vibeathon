@@ -1,0 +1,195 @@
+:root {
+  color-scheme: light dark;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #0b0b1a;
+  color: #f0f4ff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.login {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(18, 18, 40, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.button {
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(135deg, #6c5df5, #9f76ff);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button.secondary {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filters {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#cell-filter {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(18, 18, 40, 0.8);
+  color: inherit;
+  min-height: 4rem;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.mode-toggle .button {
+  flex: 1;
+}
+
+.mode-toggle .button.active {
+  outline: 2px solid #fff;
+}
+
+.cell-management {
+  margin-top: 3rem;
+  background: rgba(18, 18, 40, 0.9);
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+.cell-management-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-grid input,
+.form-grid select {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(18, 18, 40, 0.8);
+  color: inherit;
+}
+
+.cells-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.cell-card {
+  padding: 1rem;
+  background: rgba(12, 12, 30, 0.9);
+  border-radius: 12px;
+}
+
+.cell-card h4 {
+  margin: 0 0 0.5rem 0;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.member-item button {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.students {
+  margin-top: 3rem;
+  background: rgba(18, 18, 40, 0.9);
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th {
+  text-align: left;
+  font-weight: 600;
+  color: #9fbbff;
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .dashboard header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .charts {
+    grid-template-columns: 1fr;
+  }
+  th,
+  td {
+    font-size: 0.85rem;
+  }
+}
+

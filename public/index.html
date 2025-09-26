@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Semillero Digital Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <main class="container">
+      <section class="login" id="login-section">
+        <h1>Semillero Digital Dashboard</h1>
+        <p>Gestiona el progreso de alumnos y células en tiempo real.</p>
+        <div id="google-signin"></div>
+      </section>
+
+      <section class="dashboard hidden" id="dashboard-section">
+        <header>
+          <div>
+            <h1>Semillero Digital Dashboard</h1>
+            <p id="user-info"></p>
+          </div>
+          <button id="logout-btn" class="button">Cerrar sesión</button>
+        </header>
+
+        <div class="mode-toggle hidden" id="mode-toggle">
+          <button class="button" data-mode="teacher">Modo Profesor</button>
+          <button class="button secondary" data-mode="coordinator">Modo Coordinador</button>
+        </div>
+
+        <div class="filters">
+          <label for="cell-filter">Células visibles</label>
+          <select id="cell-filter" multiple></select>
+        </div>
+
+        <div class="charts">
+          <canvas id="chart-totals"></canvas>
+          <canvas id="chart-by-task"></canvas>
+          <canvas id="chart-by-cell"></canvas>
+        </div>
+
+        <section class="cell-management hidden" id="cell-management">
+          <h2>Gestión de Células</h2>
+          <div class="cell-management-grid">
+            <div>
+              <h3>Células y miembros</h3>
+              <div id="cells-list" class="cells-list"></div>
+            </div>
+            <div>
+              <h3>Nueva célula</h3>
+              <form id="create-cell-form" class="form-grid">
+                <input type="text" id="cell-name" placeholder="Nombre de la célula" required />
+                <button type="submit" class="button">Crear célula</button>
+              </form>
+              <h3>Asignar miembro</h3>
+              <form id="assign-member-form" class="form-grid">
+                <select id="assign-cell-select" required></select>
+                <select id="assign-role-select">
+                  <option value="teacher">Profesor</option>
+                  <option value="student">Alumno</option>
+                </select>
+                <input type="email" id="assign-email" placeholder="Email" required />
+                <input type="text" id="assign-name" placeholder="Nombre (opcional)" />
+                <button type="submit" class="button">Asignar</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="students" id="students-section">
+          <h2>Alumnos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Alumno</th>
+                <th>Célula</th>
+                <th>Tarea</th>
+                <th>Estado</th>
+                <th>Retraso</th>
+                <th>Actualización</th>
+                <th>Classroom</th>
+              </tr>
+            </thead>
+            <tbody id="students-table-body"></tbody>
+          </table>
+        </section>
+      </section>
+    </main>
+
+    <script>window.GOOGLE_CLIENT_ID="977103222873-81pu160gcqstk82qm608kj8esdalmaaa.apps.googleusercontent.com";</script>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
+
