@@ -106,9 +106,11 @@ La aplicación estará disponible en `http://localhost:5001`.
 
 ## Actualización de Client ID
 
-Si cambias las credenciales de Google, actualiza también:
-- `public/app.js` (líneas 62 y 440)
-- `public/index.html` (línea 92)
+⚠️ **IMPORTANTE**: Después de clonar el repositorio, debes actualizar el Client ID en:
+- `public/app.js` (líneas 63 y 441) - Reemplazar `TU_GOOGLE_CLIENT_ID_AQUI`
+- `public/index.html` (línea 92) - Reemplazar `TU_GOOGLE_CLIENT_ID_AQUI`
+
+O puedes usar tu propio Client ID que debe coincidir con la variable `GOOGLE_CLIENT_ID` en tu archivo `.env`.
 
 ## Gestión de Células
 
