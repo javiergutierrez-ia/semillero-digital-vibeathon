@@ -70,14 +70,19 @@ npm install
 ```
 
 #### 2.2 Crear archivo `.env`
-Crea un archivo `.env` en la raíz del proyecto:
+Copia el archivo de ejemplo y configúralo:
+
+```bash
+cp .env.example .env
 ```
-GOOGLE_CLIENT_ID=977103222873-tu-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=GOCSPX-tu-client-secret
-PORT=5001
-DATABASE_PATH=data/app.db
-SECRET_KEY=tu-secret-key-super-seguro
-```
+
+Luego edita el archivo `.env` con tus credenciales reales. 
+
+📋 **El archivo `.env.example` incluye:**
+- Todas las variables necesarias con ejemplos
+- Instrucciones paso a paso para Google Cloud Console
+- Lista completa de scopes OAuth requeridos
+- Notas importantes sobre configuración
 
 #### 2.3 Ejecutar la aplicación
 ```bash
