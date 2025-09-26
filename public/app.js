@@ -41,7 +41,8 @@ window.handleCredentialResponse = async (response) => {
 
   if (!loginResponse.ok) {
     const error = await loginResponse.json();
-    alert(error.message || 'Error al iniciar sesión');
+    console.error('Error en el login:', error);
+    alert(`Error al iniciar sesión: ${error.message || 'Error desconocido'}\nVerifica que tu cuenta esté registrada en Google Classroom como profesor.`);
     return;
   }
 
@@ -59,8 +60,8 @@ window.handleCredentialResponse = async (response) => {
 async function promptAccessToken() {
   return new Promise((resolve) => {
     const client = google.accounts.oauth2.initTokenClient({
-      client_id: '977103222873-81pu160gcqstk82qm608kj8esdalmaaa.apps.googleusercontent.com',
-      scope: 'https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.student-submissions.students.readonly https://www.googleapis.com/auth/classroom.rosters.readonly',
+      client_id: 'TU_GOOGLE_CLIENT_ID_AQUI',
+      scope: 'https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.rosters.readonly https://www.googleapis.com/auth/classroom.student-submissions.students.readonly https://www.googleapis.com/auth/classroom.profile.emails https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
       callback: (tokenResponse) => {
         resolve(tokenResponse.access_token);
       }
@@ -437,7 +438,7 @@ function initializeGoogle() {
   }
 
   google.accounts.id.initialize({
-    client_id: '977103222873-81pu160gcqstk82qm608kj8esdalmaaa.apps.googleusercontent.com',
+    client_id: 'TU_GOOGLE_CLIENT_ID_AQUI',
     callback: window.handleCredentialResponse
   });
 

@@ -21,8 +21,10 @@ function getConfig() {
 
   cachedConfig = {
     clientId: process.env.GOOGLE_CLIENT_ID,
-    port: process.env.PORT || 3000,
-    databasePath: process.env.DATABASE_PATH || 'data/app.db'
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    port: process.env.PORT || 5001,
+    databasePath: process.env.DATABASE_PATH || 'data/app.db',
+    secretKey: process.env.SECRET_KEY || 'default-secret-key'
   };
 
   return cachedConfig;

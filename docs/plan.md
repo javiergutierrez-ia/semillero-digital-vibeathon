@@ -52,9 +52,18 @@ Construir la solución mínima viable ganadora para el hackathon Vibeathon: una 
 
 ## Requisitos Previos
 
-- Proyecto Google Cloud con OAuth 2.0 Client ID configurado para aplicaciones web.
-- APIs habilitadas: Google Classroom, Google People (opcional para datos de perfil).
-- Node.js 20+.
+- **Proyecto Google Cloud** con OAuth 2.0 Client ID configurado para aplicaciones web.
+- **APIs habilitadas**: Google Classroom API (obligatorio), Google People API (opcional).
+- **OAuth Consent Screen** configurado como "Externo" con estos scopes:
+  - `https://www.googleapis.com/auth/classroom.courses.readonly`
+  - `https://www.googleapis.com/auth/classroom.rosters.readonly`
+  - `https://www.googleapis.com/auth/classroom.student-submissions.students.readonly`
+  - `https://www.googleapis.com/auth/classroom.profile.emails` ⚠️ **CRÍTICO**
+  - `https://www.googleapis.com/auth/userinfo.email`
+  - `https://www.googleapis.com/auth/userinfo.profile`
+  - `openid`
+- **Node.js 20+** instalado.
+- **Puerto 5001** disponible (configuración por defecto).
 - Opcional: dataset inicial para SQLite (seeds).
 
 ## Flujo de Datos
