@@ -4,11 +4,13 @@ Aplicación web minimalista para el hackathon Vibeathon 2025. Permite a profesor
 
 ## Características
 
-- Inicio de sesión con Google Identity Services.
-- Dashboards diferenciados por modo (profesor o coordinador) con cambio dinámico.
-- Gestión de células y asignación de profesores/alumnos desde la propia aplicación.
-- Gráfico de dona de estados globales, barras apiladas por tarea y célula.
-- Listado detallado de alumnos con enlaces directos a Classroom.
+- **🔐 Autenticación Google**: Inicio de sesión con Google Identity Services integrado
+- **🎯 Selección de modo**: Interfaz intuitiva para elegir entre modo Profesor o Coordinador
+- **📊 Dashboards separados**: Vistas específicas con navegación clara entre Dashboard y Gestión
+- **🏢 Gestión de células**: Creación y asignación de profesores/alumnos desde la aplicación
+- **📈 Visualización avanzada**: Gráficos de dona y barras apiladas con **estados en español**
+- **👨‍🎓 Seguimiento de estudiantes**: Listado detallado con enlaces directos a Classroom
+- **📱 Diseño responsive**: Interfaz moderna y minimalista que funciona en todos los dispositivos
 
 ## Requisitos Previos
 
@@ -136,10 +138,12 @@ La aplicación requiere estos permisos específicos para funcionar correctamente
 
 ## Flujo de Uso
 
-1. Abrir la aplicación en `http://localhost:5001` y autenticarse con Google.
-2. El backend verifica el ID token, consulta Google Classroom API para identificar el rol del usuario y carga asignaciones de la base SQLite.
-3. Seleccionar células o cambiar a modo coordinador para ver y gestionar más grupos.
-4. Navegar los gráficos y la tabla de alumnos con enlaces directos a Classroom.
+1. **🚀 Inicio**: Abrir `http://localhost:5001` y autenticarse con Google
+2. **🎯 Selección de modo**: Elegir entre "Modo Profesor" o "Modo Coordinador" 
+3. **📊 Dashboard**: Ver métricas consolidadas con estados en español (Nuevo, Creado, Entregado, Devuelto)
+4. **⚙️ Gestión** (solo coordinadores): Crear células y asignar profesores/estudiantes
+5. **🔄 Navegación**: Cambiar entre Dashboard y Gestión usando la navegación superior
+6. **📝 Seguimiento**: Revisar tabla de estudiantes con enlaces directos a Classroom
 
 ## Pruebas Manuales
 

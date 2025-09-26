@@ -141,18 +141,56 @@ router.delete('/api/cells/:cellId/assignments/:assignmentId', async (req, res) =
   }
 });
 
+router.delete('/api/cells/:cellId/assignments/:assignmentId', async (req, res) => {
+  try {
+    const { cellId, assignmentId } = req.params;
+    const { idToken, accessToken } = extractTokens(req);
+    const context = await resolveUserContext({ idToken, accessToken, mode: 'coordinator' });
+
+    if (!context.user.canManage) {
+      return res.status(403).json({ message: 'No tienes permisos para gestionar células' });
+    }
+
+    // Verificar que el usuario tiene acceso a esta célula
+    if (!context.allowedCellIds.includes(Number(cellId))) {
+      return res.status(403).json({ message: 'No tienes permisos para gestionar esta célula' });
+    }
+
+    removeCellMember(Number(cellId), Number(assignmentId));
+    res.json({ message: 'Asignación eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error eliminando asignación:', error);
+    res.status(400).json({ message: error.message });
+  }
+});
+
 router.post('/api/dashboard/summary', async (req, res) => {
   try {
-    const { idToken, accessToken, mode, selectedCells } = req.body || {};
+    const { idToken, accessToken, mode, selectedCells, selectedTeachers, selectedStatuses } = req.body || {};
 
     const context = await resolveUserContext({ idToken, accessToken, mode, selectedCells });
 
     const classroomData = await fetchAllData(context.googleApis.classroom, context.user.email);
 
+    console.log('📊 Datos de Classroom obtenidos:');
+    console.log('- Cursos encontrados:', classroomData?.length || 0);
+    console.log('- Asignaciones de células:', context.assignments?.length || 0);
+    
+    classroomData?.forEach((course, i) => {
+      console.log(`  Curso ${i + 1}: ${course.name} - ${course.students?.length || 0} estudiantes`);
+    });
+    
     const summary = aggregateData({
       classroomData,
-      assignments: context.assignments
+      assignments: context.assignments,
+      filters: {
+        selectedTeachers,
+        selectedStatuses
+      }
     });
+    
+    console.log('📈 Summary generado:');
+    console.log('- Estudiantes en summary:', summary?.students?.length || 0);
 
     res.json({
       summary,

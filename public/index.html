@@ -14,78 +14,216 @@
         <h1>Semillero Digital Dashboard</h1>
         <p>Gestiona el progreso de alumnos y células en tiempo real.</p>
         <div id="google-signin"></div>
+        <div id="login-spinner" class="spinner hidden" style="display: none;">
+          <div class="spinner-circle"></div>
+          <p>Iniciando sesión...</p>
+        </div>
       </section>
 
+      <!-- Selección de Modo -->
+      <section class="mode-selection hidden" id="mode-selection">
+        <button id="logout-btn-mode" class="button icon-button logout-fixed" title="Cerrar sesión">
+          ⏻
+        </button>
+        <h1>Selecciona tu modo de trabajo</h1>
+        <p id="user-welcome"></p>
+        <div class="mode-cards">
+          <div class="mode-card" data-mode="teacher" onclick="selectMode('teacher')">
+            <div class="mode-icon">👨‍🏫</div>
+            <h3>Modo Profesor</h3>
+            <p>Visualiza métricas y progreso de tus estudiantes</p>
+          </div>
+          <div class="mode-card" data-mode="coordinator" onclick="selectMode('coordinator')">
+            <div class="mode-icon">👨‍💼</div>
+            <h3>Modo Coordinador</h3>
+            <p>Gestiona células, usuarios y métricas consolidadas</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
       <section class="dashboard hidden" id="dashboard-section">
-        <header>
-          <div>
+        <header class="main-header">
+          <div class="header-left">
             <h1>Semillero Digital Dashboard</h1>
             <p id="user-info"></p>
           </div>
-          <button id="logout-btn" class="button">Cerrar sesión</button>
+          <div class="header-right">
+            <nav class="main-nav">
+              <button class="nav-item active" data-view="dashboard">
+                📊 Dashboard
+              </button>
+              <button class="nav-item hidden" id="management-nav" data-view="management">
+                ⚙️ Gestión
+              </button>
+            </nav>
+            <button id="mode-switch-btn" class="button secondary">
+              🔄 Cambiar Modo
+            </button>
+            <button id="logout-btn" class="button icon-button" title="Cerrar sesión">
+              ⏻
+            </button>
+          </div>
         </header>
 
-        <div class="mode-toggle hidden" id="mode-toggle">
-          <button class="button" data-mode="teacher">Modo Profesor</button>
-          <button class="button secondary" data-mode="coordinator">Modo Coordinador</button>
-        </div>
-
-        <div class="filters">
-          <label for="cell-filter">Células visibles</label>
-          <select id="cell-filter" multiple></select>
-        </div>
-
-        <div class="charts">
-          <canvas id="chart-totals"></canvas>
-          <canvas id="chart-by-task"></canvas>
-          <canvas id="chart-by-cell"></canvas>
-        </div>
-
-        <section class="cell-management hidden" id="cell-management">
-          <h2>Gestión de Células</h2>
-          <div class="cell-management-grid">
-            <div>
-              <h3>Células y miembros</h3>
-              <div id="cells-list" class="cells-list"></div>
+        <!-- Vista Dashboard -->
+        <div class="dashboard-content" id="dashboard-view">
+          <div id="dashboard-spinner" class="spinner hidden" style="display: none;">
+            <div class="spinner-circle"></div>
+            <p>Cargando datos...</p>
+          </div>
+          <div class="filters">
+            <div class="filter-group">
+              <label for="cell-filter">📊 Células/Cohortes</label>
+              <select id="cell-filter" multiple></select>
             </div>
-            <div>
-              <h3>Nueva célula</h3>
-              <form id="create-cell-form" class="form-grid">
-                <input type="text" id="cell-name" placeholder="Nombre de la célula" required />
-                <button type="submit" class="button">Crear célula</button>
-              </form>
-              <h3>Asignar miembro</h3>
-              <form id="assign-member-form" class="form-grid">
-                <select id="assign-cell-select" required></select>
-                <select id="assign-role-select">
-                  <option value="teacher">Profesor</option>
-                  <option value="student">Alumno</option>
-                </select>
-                <input type="email" id="assign-email" placeholder="Email" required />
-                <input type="text" id="assign-name" placeholder="Nombre (opcional)" />
-                <button type="submit" class="button">Asignar</button>
-              </form>
+            <div class="filter-group">
+              <label for="teacher-filter">👨‍🏫 Profesores</label>
+              <select id="teacher-filter" multiple>
+                <option value="">Todos los profesores</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="status-filter">📋 Estado de Entrega</label>
+              <select id="status-filter" multiple>
+                <option value="">Todos los estados</option>
+                <option value="NEW">Nuevo</option>
+                <option value="CREATED">Creado</option>
+                <option value="TURNED_IN">Entregado</option>
+                <option value="RETURNED">Devuelto</option>
+                <option value="RECLAIMED_BY_STUDENT">Recuperado</option>
+              </select>
             </div>
           </div>
-        </section>
 
-        <section class="students" id="students-section">
-          <h2>Alumnos</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Alumno</th>
-                <th>Célula</th>
-                <th>Tarea</th>
-                <th>Estado</th>
-                <th>Retraso</th>
-                <th>Actualización</th>
-                <th>Classroom</th>
-              </tr>
-            </thead>
-            <tbody id="students-table-body"></tbody>
-          </table>
-        </section>
+          <div class="charts">
+            <div class="chart-container">
+              <h3>📈 Estados Generales</h3>
+              <div id="chart-totals-spinner" class="chart-spinner hidden" style="display: none;">
+                <div class="spinner-circle"></div>
+                <p>Cargando estados...</p>
+              </div>
+              <canvas id="chart-totals"></canvas>
+            </div>
+            <div class="chart-container">
+              <h3>📋 Por Tarea</h3>
+              <div id="chart-tasks-spinner" class="chart-spinner hidden" style="display: none;">
+                <div class="spinner-circle"></div>
+                <p>Cargando tareas...</p>
+              </div>
+              <canvas id="chart-by-task"></canvas>
+            </div>
+            <div class="chart-container">
+              <h3>🏢 Por Célula</h3>
+              <div id="chart-cells-spinner" class="chart-spinner hidden" style="display: none;">
+                <div class="spinner-circle"></div>
+                <p>Cargando células...</p>
+              </div>
+              <canvas id="chart-by-cell"></canvas>
+            </div>
+          </div>
+
+          <section class="students" id="students-section">
+            <h2>👨‍🎓 Estudiantes</h2>
+            <div id="students-spinner" class="spinner hidden" style="display: none;">
+              <div class="spinner-circle"></div>
+              <p>Actualizando estudiantes...</p>
+            </div>
+            <div id="students-content" class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>👤 Alumno</th>
+                    <th>🏢 Célula</th>
+                    <th>📋 Tarea</th>
+                    <th>📊 Estado</th>
+                    <th>⏰ Retraso</th>
+                    <th>🔄 Actualización</th>
+                    <th>🔗 Classroom</th>
+                  </tr>
+                </thead>
+                <tbody id="students-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Vista Gestión (solo coordinador) -->
+        <div class="dashboard-content hidden" id="management-view">
+          <!-- Lista de Células Existentes -->
+          <section class="cells-overview">
+            <h2>📋 Células Existentes</h2>
+            <div id="cells-spinner" class="spinner hidden" style="display: none;">
+              <div class="spinner-circle"></div>
+              <p>Cargando células...</p>
+            </div>
+            <div id="cells-list" class="cells-list"></div>
+          </section>
+
+          <!-- Acciones de Gestión -->
+          <div class="management-actions">
+            <!-- Crear Nueva Célula -->
+            <section class="management-card">
+              <div class="card-header">
+                <h3>➕ Crear Nueva Célula</h3>
+                <p>Agrega una nueva célula al sistema</p>
+              </div>
+              <form id="create-cell-form" class="management-form">
+                <div class="form-row">
+                  <input 
+                    type="text" 
+                    id="cell-name" 
+                    placeholder="Ej: Desarrollo Frontend" 
+                    required 
+                    class="form-input"
+                  />
+                  <button type="submit" class="button button-primary">
+                    ➕ Crear Célula
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <!-- Asignar Miembro -->
+            <section class="management-card">
+              <div class="card-header">
+                <h3>👥 Asignar Miembro a Célula</h3>
+                <p>Agrega profesores o estudiantes a las células existentes</p>
+              </div>
+              <form id="assign-member-form" class="management-form">
+                <div class="form-grid-2">
+                  <select id="assign-cell-select" required class="form-input">
+                    <option value="">Seleccionar célula</option>
+                  </select>
+                  <select id="assign-role-select" class="form-input">
+                    <option value="teacher">👨‍🏫 Profesor</option>
+                    <option value="student">👨‍🎓 Alumno</option>
+                  </select>
+                </div>
+                <div class="form-grid-2">
+                  <input 
+                    type="email" 
+                    id="assign-email" 
+                    placeholder="email@ejemplo.com" 
+                    required 
+                    class="form-input"
+                  />
+                  <input 
+                    type="text" 
+                    id="assign-name" 
+                    placeholder="Nombre completo (opcional)" 
+                    class="form-input"
+                  />
+                </div>
+                <div class="form-row">
+                  <button type="submit" class="button button-primary">
+                    👥 Asignar Miembro
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+        </div>
       </section>
     </main>
 

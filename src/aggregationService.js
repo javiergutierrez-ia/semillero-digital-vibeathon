@@ -1,5 +1,14 @@
 const STATUS_ORDER = ['NEW', 'CREATED', 'TURNED_IN', 'RETURNED', 'RECLAIMED_BY_STUDENT'];
 
+// Mapeo de estados en inglés a español
+const STATE_TRANSLATIONS = {
+  'NEW': 'Nuevo',
+  'CREATED': 'Creado', 
+  'TURNED_IN': 'Entregado',
+  'RETURNED': 'Devuelto',
+  'RECLAIMED_BY_STUDENT': 'Recuperado'
+};
+
 function normalizeState(state) {
   switch (state) {
     case 'NEW':
@@ -17,7 +26,11 @@ function normalizeState(state) {
   }
 }
 
-function aggregateData({ classroomData, assignments }) {
+function translateState(state) {
+  return STATE_TRANSLATIONS[state] || state;
+}
+
+function aggregateData({ classroomData, assignments, filters = {} }) {
   const assignmentByEmail = new Map();
 
   assignments.forEach((assignment) => {
@@ -51,6 +64,7 @@ function aggregateData({ classroomData, assignments }) {
       const summary = {
         studentEmail: student.email,
         studentName: assignment.studentName || student.name,
+        teacherName: course.teacherName || 'Profesor sin nombre',
         cellId: assignment.cellId,
         cellName: assignment.cellName,
         submissions: []
@@ -77,13 +91,32 @@ function aggregateData({ classroomData, assignments }) {
           taskId: submission.courseWorkId,
           taskTitle: submission.courseWorkTitle,
           state,
+          stateSpanish: translateState(state),
           late: submission.late,
           updatedAt: submission.updateTime,
           alternateLink: submission.courseWorkAlternateLink
         });
       });
 
-      studentSummaries.push(summary);
+      // Apply MVP filters for hackathon compliance
+      let includeStudent = true;
+      
+      // Filter by teacher
+      if (filters.selectedTeachers && filters.selectedTeachers.length > 0) {
+        includeStudent = includeStudent && filters.selectedTeachers.includes(summary.teacherName);
+      }
+      
+      // Filter by status (if student has any submission with selected status)
+      if (filters.selectedStatuses && filters.selectedStatuses.length > 0) {
+        const hasMatchingStatus = summary.submissions.some(submission => 
+          filters.selectedStatuses.includes(submission.state)
+        );
+        includeStudent = includeStudent && hasMatchingStatus;
+      }
+      
+      if (includeStudent) {
+        studentSummaries.push(summary);
+      }
     }
   }
 
@@ -126,6 +159,8 @@ function mapToArray(map) {
 
 module.exports = {
   aggregateData,
+  translateState,
+  STATE_TRANSLATIONS,
   STATUS_ORDER
 };
 

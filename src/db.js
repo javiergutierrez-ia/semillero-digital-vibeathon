@@ -109,9 +109,19 @@ function getTeacherCellIds(email) {
 
 function getStudentAssignments(cellIds = null) {
   const normalizedIds = ensureArrayNumbers(cellIds);
+  console.log('🔍 Buscando asignaciones de estudiantes para células:', normalizedIds);
+  
   if (normalizedIds.length === 0) {
+    console.log('❌ No hay IDs de células para buscar');
     return [];
   }
+
+  // First check if there are any cell members at all
+  const allMembers = db.prepare('SELECT COUNT(*) as count FROM cell_members').get();
+  console.log('👥 Total miembros en cell_members:', allMembers.count);
+  
+  const students = db.prepare('SELECT COUNT(*) as count FROM cell_members WHERE role = ?').get('student');
+  console.log('🎓 Total estudiantes en cell_members:', students.count);
 
   const placeholders = normalizedIds.map(() => '?').join(',');
   const rows = db
@@ -127,6 +137,13 @@ function getStudentAssignments(cellIds = null) {
          AND m.cell_id IN (${placeholders})`
     )
     .all(...normalizedIds);
+  
+  console.log('📊 Asignaciones encontradas:', rows.length);
+  
+  // If no assignments found, suggest creating test data
+  if (rows.length === 0) {
+    console.log('💡 Sugerencia: Usar la función "Asignar Miembro" en la interfaz para agregar estudiantes a células');
+  }
 
   return rows;
 }
